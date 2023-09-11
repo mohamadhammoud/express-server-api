@@ -1,7 +1,5 @@
 import { DataSource } from "typeorm";
 
-import dbConfig from "../config/database";
-
 type SupportedDatabaseType =
   | "postgres"
   | "mysql"
@@ -19,24 +17,44 @@ type SupportedDatabaseType =
   | "aurora-mysql"
   | "spanner";
 
+type DatabaseCredentials = {
+  type: any;
+  host: string;
+  port: number;
+  username: string;
+  password: string;
+  database: string;
+};
 class Database {
-  constructor() {
-    const AppDataSource = new DataSource({
-      type: dbConfig.development.dialect as any,
-      host: dbConfig.development.host,
-      port: dbConfig.development.port,
-      username: dbConfig.development.username,
-      password: dbConfig.development.password,
-      database: dbConfig.development.database,
+  public AppDataSource: DataSource;
+
+  constructor({
+    type,
+    host,
+    port,
+    username,
+    password,
+    database,
+  }: DatabaseCredentials) {
+    this.AppDataSource = new DataSource({
+      type,
+      host,
+      port,
+      username,
+      password,
+      database,
     });
 
-    AppDataSource.initialize()
-      .then(() => {
-        console.log("Data Source has been initialized!");
-      })
-      .catch((err) => {
-        console.error("Error during Data Source initialization", err);
-      });
+    this.initialize();
+  }
+
+  async initialize() {
+    try {
+      await this.AppDataSource.initialize();
+      console.log("Data Source has been initialized!");
+    } catch (err) {
+      console.error("Error during Data Source initialization", err);
+    }
   }
 }
 
