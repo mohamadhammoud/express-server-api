@@ -24,6 +24,7 @@ type DatabaseCredentials = {
   username: string;
   password: string;
   database: string;
+  entities: any[];
 };
 class Database {
   public AppDataSource: DataSource;
@@ -35,6 +36,7 @@ class Database {
     username,
     password,
     database,
+    entities,
   }: DatabaseCredentials) {
     this.AppDataSource = new DataSource({
       type,
@@ -43,6 +45,9 @@ class Database {
       username,
       password,
       database,
+      entities,
+      synchronize: true, // Enable schema synchronization
+      // logging: true, // Enable query logging
     });
 
     this.initialize();
