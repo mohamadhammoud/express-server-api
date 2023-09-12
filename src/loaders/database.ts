@@ -1,5 +1,6 @@
 import { dbConfig } from "../config";
 import Database from "../database";
+import { Company } from "../models/company";
 import { User } from "../models/user";
 
 class DatabaseLoader {
@@ -11,7 +12,7 @@ class DatabaseLoader {
       username: dbConfig.development.username,
       password: dbConfig.development.password,
       database: dbConfig.development.database,
-      entities: [User],
+      entities: [User, Company],
     });
   }
 }

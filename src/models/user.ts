@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Company } from "./company";
 
 export enum UserRole {
   ADMIN = "admin",
@@ -31,4 +32,7 @@ export class User {
 
   @Column()
   isActive: boolean;
+
+  @ManyToOne(() => Company, (company) => company.users)
+  company: Company;
 }
