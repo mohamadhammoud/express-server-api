@@ -1,4 +1,5 @@
 export default {
+  prefix: process?.env?.APP_API_PREFIX || "/api",
   port: process?.env?.PORT ?? 8080,
   nodeEnv: process.env.NODE_ENV || "development",
   saltRounds: process.env.SALT_ROUNDS || 10,

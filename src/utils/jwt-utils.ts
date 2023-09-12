@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import environment from "../config/environment";
+import { environment } from "../config";
 
 class JWTUtils {
   static generateAccessToken(payload: any, options: jwt.SignOptions) {
