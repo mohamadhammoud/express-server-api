@@ -1,13 +1,11 @@
-import { dbConfig } from "./config";
-import Database from "./database";
-import { User } from "./models/user";
+import express from "express";
+import AppLoader from "./loaders";
+import { environment } from "./config";
 
-new Database({
-  type: dbConfig.development.dialect,
-  host: dbConfig.development.host,
-  port: dbConfig.development.port,
-  username: dbConfig.development.username,
-  password: dbConfig.development.password,
-  database: dbConfig.development.database,
-  entities: [User],
+const app = express();
+
+new AppLoader(app);
+
+app.listen(environment.port, () => {
+  console.log("🔥 Server is running on port", environment.port);
 });
