@@ -27,7 +27,7 @@ type DatabaseCredentials = {
   entities: any[];
 };
 class Database {
-  public AppDataSource: DataSource;
+  public appDataSource: DataSource;
 
   constructor({
     type,
@@ -38,7 +38,7 @@ class Database {
     database,
     entities,
   }: DatabaseCredentials) {
-    this.AppDataSource = new DataSource({
+    this.appDataSource = new DataSource({
       type,
       host,
       port,
@@ -55,11 +55,11 @@ class Database {
 
   async initialize() {
     try {
-      if (this.AppDataSource) {
-        await this.AppDataSource?.initialize();
+      if (this.appDataSource) {
+        await this.appDataSource?.initialize();
       }
 
-      if (this.AppDataSource?.isInitialized) {
+      if (this.appDataSource?.isInitialized) {
         console.log("Data Source has been initialized!");
       }
     } catch (err) {
@@ -69,8 +69,8 @@ class Database {
 
   async destroy() {
     try {
-      if (this.AppDataSource?.isInitialized) {
-        await this.AppDataSource.destroy();
+      if (this.appDataSource?.isInitialized) {
+        await this.appDataSource.destroy();
         console.log("Data Source has been destroyed!");
       }
     } catch (err) {

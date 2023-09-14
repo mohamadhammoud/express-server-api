@@ -1,11 +1,14 @@
+import { DataSource } from "typeorm";
 import { dbConfig } from "../config";
 import Database from "../database";
 import { Company } from "../models/company";
 import { User } from "../models/user";
 
 class DatabaseLoader {
+  public database: Database;
+
   constructor() {
-    new Database({
+    this.database = new Database({
       type: dbConfig.development.dialect,
       host: dbConfig.development.host,
       port: dbConfig.development.port,
@@ -14,6 +17,10 @@ class DatabaseLoader {
       database: dbConfig.development.database,
       entities: [User, Company],
     });
+  }
+
+  getDatabaseSource(): DataSource {
+    return this.database.appDataSource;
   }
 }
 
