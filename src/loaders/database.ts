@@ -1,26 +1,53 @@
 import { DataSource } from "typeorm";
 import { dbConfig } from "../config";
-import Database from "../database";
 import { Company } from "../models/company";
 import { User } from "../models/user";
 
 class DatabaseLoader {
-  public database: Database;
+  private static instance: DatabaseLoader;
+  private dataSource: DataSource;
 
   constructor() {
-    this.database = new Database({
-      type: dbConfig.development.dialect,
+    this.dataSource = new DataSource({
+      type: dbConfig.development.dialect as any,
       host: dbConfig.development.host,
       port: dbConfig.development.port,
       username: dbConfig.development.username,
       password: dbConfig.development.password,
       database: dbConfig.development.database,
       entities: [User, Company],
+      synchronize: true, // Enable schema synchronization
+      // logging: true, // Enable query logging
     });
+
+    this.initialize();
   }
 
-  getDatabaseSource(): DataSource {
-    return this.database.appDataSource;
+  async initialize() {
+    try {
+      if (this.dataSource) {
+        await this.dataSource?.initialize();
+
+        DatabaseLoader.instance = this;
+      }
+
+      if (this.dataSource?.isInitialized) {
+        console.log("Data Source has been initialized!");
+      }
+    } catch (err) {
+      console.error("Error during Data Source initialization", err);
+    }
+  }
+
+  public static getInstance(): DatabaseLoader {
+    if (!DatabaseLoader.instance) {
+      DatabaseLoader.instance = new DatabaseLoader();
+    }
+    return DatabaseLoader.instance;
+  }
+
+  public getDataSource(): DataSource {
+    return this.dataSource;
   }
 }
 
