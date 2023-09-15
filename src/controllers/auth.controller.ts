@@ -10,9 +10,23 @@ class AuthController {
     this.dataSource = this.databaseLoader.getDataSource();
   }
 
-  async login() {
+  async signup({ firstName, lastName, email, password, role, company }: any) {
+    const user = await this.dataSource.manager.create(User, {
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+      company,
+    });
+
+    await this.dataSource.manager.save(user);
+  }
+
+  async login(email: string, password: string) {
     const user = await this.dataSource.manager.findOneBy(User, {
-      id: 1,
+      email,
+      password,
     });
 
     if (user != null) {

@@ -30,9 +30,9 @@ export class User {
   })
   role: UserRole;
 
-  @Column()
+  @Column({ default: true })
   isActive: boolean;
 
-  @ManyToOne(() => Company, (company) => company.users)
-  company: Company;
+  @ManyToOne(() => Company, (company) => company.users, { nullable: true })
+  company: Company | null;
 }
