@@ -8,6 +8,10 @@ class DatabaseLoader {
   private dataSource: DataSource;
 
   constructor() {
+    if (DatabaseLoader.instance != null) {
+      return DatabaseLoader.instance;
+    }
+
     this.dataSource = new DataSource({
       type: dbConfig.development.dialect as any,
       host: dbConfig.development.host,
@@ -21,14 +25,13 @@ class DatabaseLoader {
     });
 
     this.initialize();
+    DatabaseLoader.instance = this;
   }
 
   async initialize() {
     try {
       if (this.dataSource) {
         await this.dataSource?.initialize();
-
-        DatabaseLoader.instance = this;
       }
 
       if (this.dataSource?.isInitialized) {
@@ -43,6 +46,7 @@ class DatabaseLoader {
     if (!DatabaseLoader.instance) {
       DatabaseLoader.instance = new DatabaseLoader();
     }
+
     return DatabaseLoader.instance;
   }
 
