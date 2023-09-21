@@ -14,3 +14,5 @@ class JWTUtils {
     return jwt.verify(accessToken, environment.jwtAccessTokenSecret);
   }
 }
+
+export default JWTUtils;
